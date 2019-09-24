@@ -1,5 +1,5 @@
 <?php
-class AlumnoModel{
+class CursoModelBean{
     public $id;
     public $nombre;
      
