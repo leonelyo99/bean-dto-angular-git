@@ -9,7 +9,7 @@ require 'vendor/autoload.php';
 require 'models/Usuario.php';
 require 'models/Curso.php';
 require 'models/Union.php';
-require 'models/AlumnosDeCursos.php';
+require 'models/UsuariosDeCursos.php';
 
 $app = new Slim\App();
 
