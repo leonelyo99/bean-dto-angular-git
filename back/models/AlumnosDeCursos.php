@@ -1,5 +1,5 @@
 <?php
-class UsuariosDeCursosModelDto{
+class UsuariosDeCursosDto{
     public $id_usuario;
     public $usuario;
     public $id_curso;

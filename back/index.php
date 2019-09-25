@@ -16,9 +16,17 @@ $app = new Slim\App();
 $dbhost = 'localhost';
 $dbuser   = 'root';
 $dbpassword = '';
-$database = "final"; 
+$database = "clase12"; 
 
 $db = new mysqli($dbhost,$dbuser,$dbpassword,$database);
+
+//============================
+//aclaracion
+//============================
+//como slim no tiene un constructor no se me ocurrio como centralizar todas las peticiones y por eso
+//hago una peticion en cada ruta en ves de guardar los datos desde un constructor e irlos sacando de hay
+
+
 
 //================================
 //alumno por id
@@ -32,7 +40,7 @@ $app->get('/alumno/{id}', function($request, $response, $args) use($db) {
     //guardado de datos
     $alumnos = array();
     while ($datos = $query->fetch_assoc()) {
-        $alumnos[] =  new UsuarioModelBean($datos["id"], $datos["nombre"]);
+        $alumnos[] =  new UsuarioBean($datos["id"], $datos["nombre"]);
     }
 
     // return ;
@@ -52,7 +60,7 @@ $app->get('/alumnos', function($request, $response, $args) use($db) {
     //guardado de datos
     $alumnos = array();
     while ($datos = $query->fetch_assoc()) {
-        $alumnos[] =  new UsuarioModelBean($datos["id"], $datos["nombre"]);
+        $alumnos[] =  new UsuarioBean($datos["id"], $datos["nombre"]);
     }
 
     // return ;
@@ -72,7 +80,7 @@ $app->get('/curso/{id}', function($request, $response, $args) use($db) {
     //guardado de datos
     $cursos = array();
     while ($datos = $query->fetch_assoc()) {
-        $cursos[] =  new CursoModelBean($datos["id"], $datos["nombre"]);
+        $cursos[] =  new CursoBean($datos["id"], $datos["nombre"]);
     }
 
     // return ;
@@ -92,7 +100,7 @@ $app->get('/cursos', function($request, $response, $args) use($db) {
     //guardado de datos
     $cursos = array();
     while ($datos = $query->fetch_assoc()) {
-        $cursos[] =  new CursoModelBean($datos["id"], $datos["nombre"]);
+        $cursos[] =  new CursoBean($datos["id"], $datos["nombre"]);
     }
 
     // return ;
@@ -125,26 +133,26 @@ $app->get('/cursos/alumnos', function($request, $response, $args) use($db) {
     $alumnosCursos = array();
     
     while ($usuario = $queryUsuarios->fetch_assoc()) {
-        $usuarios[] =  new UsuarioModelBean($usuario["id"], $usuario["nombre"]);
+        $usuarios[] =  new UsuarioBean($usuario["id"], $usuario["nombre"]);
     }
     while ($curso = $queryCursos->fetch_assoc()) {
-        $cursos[] =  new CursoModelBean($curso["id"], $curso["nombre"]);
+        $cursos[] =  new CursoBean($curso["id"], $curso["nombre"]);
     }
     while ($dato = $queryUnion->fetch_assoc()) {
         $uniones[] =  new UnionBean($dato["id_usuario"], $dato["id_curso"]);;
     }
 
-    //armando el DTO apartir de los bean
+    //armando el DTO a partir de los bean
     foreach($usuarios as $usuario){
         foreach ($uniones as $union) {
             if($usuario->id === $union->id_usuario){
-                $alumnosCursos[] = new UsuariosDeCursosModelDto($usuario->id, $usuario->nombre, $union->id_curso, $cursos[$union->id_curso - 1]->nombre);
+                $alumnosCursos[] = new UsuariosDeCursosDto($usuario->id, $usuario->nombre, $union->id_curso, $cursos[$union->id_curso - 1]->nombre);
             }
         }
     }
     foreach($usuarios as $usuario){
         if($alumnosCursos[$usuario->id - 1]->usuario != $usuario->nombre){
-            $alumnosCursos[] = new UsuariosDeCursosModelDto($usuario->id, $usuario->nombre, null, null);
+            $alumnosCursos[] = new UsuariosDeCursosDto($usuario->id, $usuario->nombre, null, null);
         }
     }
     
