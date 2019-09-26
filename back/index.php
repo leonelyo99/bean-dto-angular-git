@@ -16,7 +16,7 @@ $app = new Slim\App();
 $dbhost = 'localhost';
 $dbuser   = 'root';
 $dbpassword = '';
-$database = "clase12"; 
+$database = "final"; 
 
 $db = new mysqli($dbhost,$dbuser,$dbpassword,$database);
 
@@ -146,13 +146,17 @@ $app->get('/cursos/alumnos', function($request, $response, $args) use($db) {
     foreach($usuarios as $usuario){
         foreach ($uniones as $union) {
             if($usuario->id === $union->id_usuario){
-                $alumnosCursos[] = new UsuariosDeCursosDto($usuario->id, $usuario->nombre, $union->id_curso, $cursos[$union->id_curso - 1]->nombre);
+                $usuario = new UsuarioBean($usuario->id, $usuario->nombre);
+                $curso = new CursoBean($union->id_curso, $cursos[$union->id_curso - 1]->nombre);
+                $alumnosCursos[] = new UsuariosDeCursosDto($usuario, $curso);
             }
         }
     }
     foreach($usuarios as $usuario){
         if($alumnosCursos[$usuario->id - 1]->usuario != $usuario->nombre){
-            $alumnosCursos[] = new UsuariosDeCursosDto($usuario->id, $usuario->nombre, null, null);
+            // $usuario = new UsuarioBean($usuario->id, $usuario->nombre);
+            $curso = new CursoBean(null, null);
+            $alumnosCursos[] = new UsuariosDeCursosDto($usuario, $curso);
         }
     }
     

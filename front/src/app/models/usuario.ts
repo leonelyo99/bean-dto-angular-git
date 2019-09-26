@@ -1,4 +1,4 @@
-export class Usuario {
+export class UsuarioBean {
 
     id: number;
     nombre: string;

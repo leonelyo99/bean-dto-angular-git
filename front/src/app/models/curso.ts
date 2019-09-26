@@ -1,4 +1,4 @@
-export class Curso {
+export class CursoBean {
 
     id: number;
     nombre: string;
